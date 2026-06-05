@@ -1,9 +1,9 @@
 ---
 title: Tools Reference
-description: All 23 vibeTeX tools — discovery, project sync, compile, and quality — with their parameters.
+description: All 26 vibeTeX tools — discovery, project sync, compile, and quality — with their parameters.
 ---
 
-vibeTeX exposes **23 tools** across four groups. Every project-scoped tool takes an optional `project` argument (an alias from `OVERLEAF_PROJECTS`, or a 24-hex id); omit it to use the default. Call [`overleaf_whoami`](#overleaf_whoami) first to see which [tiers](/docs/capability-tiers) are active.
+vibeTeX exposes **26 tools** across four groups. Every project-scoped tool takes an optional `project` argument (an alias from `OVERLEAF_PROJECTS`, or a 24-hex id); omit it to use the default. Call [`overleaf_whoami`](#overleaf_whoami) first to see which [tiers](/docs/capability-tiers) are active.
 
 ## Discovery
 
@@ -26,6 +26,9 @@ Show the working-copy diff / pending changes. Argument: `project`.
 
 ### overleaf_push
 Commit the working copy and push to Overleaf. Arguments: `project`, `message` (commit subject; default `vibeTeX: update via MCP`).
+
+### overleaf_diff
+Unified diff of the working copy vs `HEAD`, or between two refs. Arguments: `project`, `path` (limit to one file), `from`, `to` (commit refs; omit both for uncommitted changes). Read-only.
 
 ### overleaf_history
 List recent commits. Arguments: `project`, `limit` (1–500, default 20).
@@ -54,7 +57,10 @@ Download the whole project as a `.zip`. Arguments: `project`, `save_path`.
 ## Compile
 
 ### latex_compile
-Compile the project to PDF and parse the log. Arguments: `project`, `root` (root `.tex`; auto-detected if omitted), `engine`.
+Compile the project to PDF and parse the log — locally (`latexmk` / `tectonic` / …) **or remotely** (a self-hosted CLSI, else the experimental Overleaf session) when no local engine is installed. Arguments: `project`, `root` (root `.tex`; auto-detected if omitted), `engine`.
+
+### latex_compile_plan
+Dry-run the compile routing decision (local engine / CLSI / session / unavailable) without compiling — useful to check what `latex_compile` will do. Arguments: `project`, `root`, `engine`. Read-only.
 
 ### latex_log
 Parse the latest compile log into structured diagnostics — no recompile. Argument: `project`.
@@ -82,11 +88,14 @@ Word/character counts via `texcount`. Arguments: `project`, `file` (default `mai
 ### latex_bib
 Resolve a DOI/arXiv id to BibTeX, or append it to a `.bib`. Arguments: `action` (`lookup` \| `add`, default `lookup`), `identifier` (required — DOI or arXiv id/URL), `project`, `bib_file`.
 
+### latex_flatten
+Inline every `\input` / `\include` / `\subfile` into one self-contained `.tex` (for arXiv submission or single-file export), with a cycle guard. Arguments: `project`, `root` (auto-detected if omitted), `write_to` (optional output path in the working copy; otherwise returns the flattened text).
+
 ## At a glance
 
 | Group | Tools |
 |---|---|
 | Discovery | `overleaf_whoami`, `latex_search_tools` |
-| Project sync | `overleaf_list_projects`, `overleaf_pull`, `overleaf_status`, `overleaf_push`, `overleaf_history`, `overleaf_list_files`, `overleaf_read_file`, `overleaf_write_file`, `overleaf_edit_file`, `overleaf_delete_file`, `overleaf_create_project`, `overleaf_download_zip` |
-| Compile | `latex_compile`, `latex_log`, `latex_get_pdf` |
-| Quality | `latex_outline`, `latex_check_refs`, `latex_lint`, `latex_format`, `latex_word_count`, `latex_bib` |
+| Project sync | `overleaf_list_projects`, `overleaf_pull`, `overleaf_status`, `overleaf_push`, `overleaf_diff`, `overleaf_history`, `overleaf_list_files`, `overleaf_read_file`, `overleaf_write_file`, `overleaf_edit_file`, `overleaf_delete_file`, `overleaf_create_project`, `overleaf_download_zip` |
+| Compile | `latex_compile`, `latex_compile_plan`, `latex_log`, `latex_get_pdf` |
+| Quality | `latex_outline`, `latex_check_refs`, `latex_lint`, `latex_format`, `latex_word_count`, `latex_bib`, `latex_flatten` |

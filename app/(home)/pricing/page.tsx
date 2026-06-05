@@ -45,7 +45,7 @@ const HOSTED = [
 const FAQ = [
   {
     q: 'Why pay if it’s open-source?',
-    a: 'You’re paying for hosting and maintenance, not features. Self-hosting gives you the exact same 23 tools for free, forever — the hosted tier just means you don’t have to run or update anything.',
+    a: 'You’re paying for hosting and maintenance, not features. Self-hosting gives you the exact same 26 tools for free, forever — the hosted tier just means you don’t have to run or update anything.',
   },
   {
     q: 'What does “pay once” mean?',

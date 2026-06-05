@@ -164,7 +164,7 @@ export default function Home() {
               </Link>
             </div>
             <p className="z-label z-rise mt-6 normal-case tracking-[0.04em]" style={{ animationDelay: '300ms' }}>
-              MIT-licensed · 23 tools · Local compile · Self-host free
+              MIT-licensed · 26 tools · Local compile · Self-host free
             </p>
           </div>
           <Reveal className="z-rise" delay={120}>
@@ -270,7 +270,7 @@ export default function Home() {
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-fd-primary">
                   <Icon path={I.lock} />
                 </span>
-                <h3 className="z-serif text-lg text-fd-foreground">23 typed tools · local-first</h3>
+                <h3 className="z-serif text-lg text-fd-foreground">26 typed tools · local-first</h3>
                 <p className="max-w-xl text-sm text-fd-muted-foreground">
                   Discovery, project sync, compile, and quality checks — outline, lint, format, word-count,
                   and BibTeX. Your git token talks only to your own Overleaf, never stored beyond the session.
