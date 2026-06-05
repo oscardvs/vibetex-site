@@ -1,0 +1,67 @@
+---
+title: Quality Checks
+description: Outline, cross-reference check, lint, format, word count, and BibTeX — vibeTeX's quality suite, led by latex_check_refs.
+---
+
+Compiling tells you the document *builds*. The quality suite tells you it's *correct* — that every reference resolves, the structure is sound, and the style is clean. These tools run against the working copy and need no Overleaf premium.
+
+## latex_check_refs — the headline tool
+
+`latex_check_refs` cross-validates the document's reference graph:
+
+- every `\ref` / `\eqref` / `\autoref` points at a real `\label`;
+- every `\cite` key exists in a `.bib` file;
+- labels that are defined but never referenced are flagged;
+- duplicate labels are reported.
+
+The output is structured, so your assistant doesn't just *report* the dangling reference — it **fixes** it, with a cited diff:
+
+```text
+You: Compile my paper and fix any broken references.
+
+Claude:
+  → latex_compile → PDF built, 0 errors
+  → latex_check_refs
+    ✗ \ref{fig:results} → no matching label
+      (did you mean fig:main-results, defined in chapters/results.tex:88?)
+  → overleaf_edit_file(
+      old_string: "see Figure \ref{fig:results}",
+      new_string: "see Figure \ref{fig:main-results}")
+  Fixed 1 dangling reference. Recompiled clean.
+```
+
+This is the difference between "your LaTeX compiles" and "your citations and figure references actually point where you think they do."
+
+## The rest of the suite
+
+| Tool | What it does | Backed by |
+|---|---|---|
+| `latex_outline` | Section/heading tree of a `.tex` file — a map of the document. | parser |
+| `latex_lint` | Static lint: spacing, math mode, common LaTeX mistakes. | `chktex` |
+| `latex_format` | Reformat LaTeX. Returns a diff by default; pass `write: true` to rewrite in place. | `latexindent` |
+| `latex_word_count` | Word/character counts, by section, excluding markup. | `texcount` |
+| `latex_bib` | Resolve a DOI or arXiv id to BibTeX (`lookup`) or append it to a project `.bib` (`add`). | DOI/arXiv resolvers |
+
+### latex_outline
+
+Pass `file` (default `main.tex`). Use it to orient before editing a large document, or to let the assistant jump straight to the right section.
+
+### latex_lint and latex_format
+
+`latex_lint` (via `chktex`) and `latex_format` (via `latexindent`) require those binaries on `PATH` — `overleaf_whoami` shows whether they're available. `latex_format` is non-destructive by default: it returns a diff so you can review before applying with `write: true`.
+
+### latex_word_count
+
+`texcount`-backed word counts that exclude LaTeX markup — accurate numbers for abstracts, sections, or journal limits.
+
+### latex_bib
+
+```text
+You: Add the BibTeX for 10.1038/s41586-021-03819-2 to my references.
+
+Claude:
+  → latex_bib(action: "add", identifier: "10.1038/s41586-021-03819-2")
+  Added @article{…} to references.bib.
+```
+
+`action: "lookup"` (the default) returns BibTeX without writing; `action: "add"` appends it to the project's single `.bib` (or `bib_file`, else `references.bib`).

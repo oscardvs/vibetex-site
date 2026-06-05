@@ -1,0 +1,49 @@
+---
+title: Free-tier (Experimental)
+description: The unofficial, experimental session-cookie tier — the only way free Overleaf users get list, pull, push, and compile. Off by default.
+---
+
+The git bridge requires an Overleaf **premium** token. Free-tier Overleaf users can instead opt into the **session-cookie tier** — the only way to get list / pull / push / compile against their cloud projects without premium.
+
+> **Read this first.** This tier is **unofficial, experimental, and best-effort**. It works by reusing your browser's Overleaf session cookie, which is a **grey area** under Overleaf's terms of service. It can break at any time when Overleaf changes its web app. It is **off by default**. You enable it yourself, with your own cookie, at your own discretion. vibeTeX never stores a password.
+
+## Enabling it
+
+Set both variables:
+
+```bash
+VIBETEX_EXPERIMENTAL_SESSION=true \
+OVERLEAF_SESSION_COOKIE='paste-your-overleaf_session2-value-here' \
+npx -y @oscardvs/vibetex
+```
+
+If `VIBETEX_EXPERIMENTAL_SESSION=true` but `OVERLEAF_SESSION_COOKIE` is missing, vibeTeX refuses to start with a clear error — the tier is deliberately explicit.
+
+## Getting your session cookie
+
+You paste **your own** cookie. No passwords are ever sent to or stored by vibeTeX.
+
+1. Sign in to Overleaf in your browser.
+2. Open your browser's developer tools → **Application** (Chrome) or **Storage** (Firefox) → **Cookies** → `https://www.overleaf.com`.
+3. Copy the **value** of the `overleaf_session2` cookie.
+4. Paste it as `OVERLEAF_SESSION_COOKIE`.
+
+The cookie expires when your Overleaf session does; refresh it the same way when sync starts failing.
+
+## What you get
+
+When active, the session tier surfaces dashboard projects and best-effort sync:
+
+- `overleaf_list_projects` includes your dashboard projects (`include_dashboard`, default true);
+- pull / push / compile operate against those projects on a best-effort basis.
+
+`overleaf_whoami` reports `experimentalSession: { enabled, active }` so you can confirm the tier is live.
+
+## Caveats
+
+- **Best-effort:** behavior depends on Overleaf's private web endpoints and may break without notice.
+- **ToS-grey:** automating the web session is not an officially supported integration — the supported path is the git bridge ([premium](/docs/project-sync)).
+- **Your responsibility:** you supply the cookie and accept the risk.
+- **Not used by the hosted tier:** the [paid hosted connector](/docs/remote-hosting) does not rely on session cookies.
+
+If you rely on Overleaf day-to-day, the git bridge is the stable, recommended path. The session tier exists so free-tier users aren't locked out entirely.

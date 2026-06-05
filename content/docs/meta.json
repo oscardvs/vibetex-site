@@ -1,0 +1,15 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "capability-tiers",
+    "configuration",
+    "project-sync",
+    "compiling",
+    "quality-checks",
+    "creating-projects",
+    "free-tier-experimental",
+    "tools-reference",
+    "remote-hosting"
+  ]
+}

@@ -1,0 +1,92 @@
+---
+title: Tools Reference
+description: All 23 vibeTeX tools — discovery, project sync, compile, and quality — with their parameters.
+---
+
+vibeTeX exposes **23 tools** across four groups. Every project-scoped tool takes an optional `project` argument (an alias from `OVERLEAF_PROJECTS`, or a 24-hex id); omit it to use the default. Call [`overleaf_whoami`](#overleaf_whoami) first to see which [tiers](/docs/capability-tiers) are active.
+
+## Discovery
+
+### overleaf_whoami
+Report active capability tiers, installed TeX/quality binaries, configured projects, base URLs, the resolved compile engine, and experimental-session status. Read-only, no arguments. **Call this first.**
+
+### latex_search_tools
+Discover vibeTeX tools by keyword. Argument: `query` (string).
+
+## Project sync (git bridge)
+
+### overleaf_list_projects
+List available projects. Argument: `include_dashboard` (boolean, default true — includes experimental session-tier dashboard projects when available).
+
+### overleaf_pull
+Clone or fast-forward the project into the local working copy. Argument: `project`.
+
+### overleaf_status
+Show the working-copy diff / pending changes. Argument: `project`.
+
+### overleaf_push
+Commit the working copy and push to Overleaf. Arguments: `project`, `message` (commit subject; default `vibeTeX: update via MCP`).
+
+### overleaf_history
+List recent commits. Arguments: `project`, `limit` (1–500, default 20).
+
+### overleaf_list_files
+List project files. Arguments: `project`, `kind` (`tex` \| `bib` \| `style` \| `asset` \| `other`).
+
+### overleaf_read_file
+Read a file. Arguments: `project`, `path` (required), `start_line`, `end_line` (1-based window).
+
+### overleaf_write_file
+Write a file's full content (create or overwrite). Arguments: `project`, `path` (required), `content` (required).
+
+### overleaf_edit_file
+Exact-string replace. Arguments: `project`, `path` (required), `old_string` (required, verbatim), `new_string` (required), `replace_all` (boolean).
+
+### overleaf_delete_file
+Delete a file. Arguments: `project`, `path` (required), `confirm` (must be `true`). Also requires `VIBETEX_ALLOW_DELETE=true`.
+
+### overleaf_create_project
+Create a new project via "Open in Overleaf". Arguments: `content` **or** `files[]` (`{name, content|uri}`) **or** `zip_uri`; plus `engine`, `main_document`. See [Creating projects](/docs/creating-projects).
+
+### overleaf_download_zip
+Download the whole project as a `.zip`. Arguments: `project`, `save_path`.
+
+## Compile
+
+### latex_compile
+Compile the project to PDF and parse the log. Arguments: `project`, `root` (root `.tex`; auto-detected if omitted), `engine`.
+
+### latex_log
+Parse the latest compile log into structured diagnostics — no recompile. Argument: `project`.
+
+### latex_get_pdf
+Locate the compiled PDF. Arguments: `project`, `root`, `save_path` (also copy the PDF there).
+
+## Quality
+
+### latex_outline
+Section/heading tree of a `.tex` file. Arguments: `project`, `file` (default `main.tex`).
+
+### latex_check_refs
+Cross-validate `\ref` / `\cite` / `\label` against the document and `.bib`; report dangling, unused, and duplicate. Argument: `project`. See [Quality checks](/docs/quality-checks).
+
+### latex_lint
+Static lint via `chktex`. Arguments: `project`, `file` (default `main.tex`).
+
+### latex_format
+Reformat via `latexindent`. Arguments: `project`, `file` (default `main.tex`), `write` (boolean — rewrite in place; default returns a diff).
+
+### latex_word_count
+Word/character counts via `texcount`. Arguments: `project`, `file` (default `main.tex`).
+
+### latex_bib
+Resolve a DOI/arXiv id to BibTeX, or append it to a `.bib`. Arguments: `action` (`lookup` \| `add`, default `lookup`), `identifier` (required — DOI or arXiv id/URL), `project`, `bib_file`.
+
+## At a glance
+
+| Group | Tools |
+|---|---|
+| Discovery | `overleaf_whoami`, `latex_search_tools` |
+| Project sync | `overleaf_list_projects`, `overleaf_pull`, `overleaf_status`, `overleaf_push`, `overleaf_history`, `overleaf_list_files`, `overleaf_read_file`, `overleaf_write_file`, `overleaf_edit_file`, `overleaf_delete_file`, `overleaf_create_project`, `overleaf_download_zip` |
+| Compile | `latex_compile`, `latex_log`, `latex_get_pdf` |
+| Quality | `latex_outline`, `latex_check_refs`, `latex_lint`, `latex_format`, `latex_word_count`, `latex_bib` |

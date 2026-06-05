@@ -1,0 +1,71 @@
+---
+title: Configuration
+description: All environment variables for vibeTeX — Overleaf auth, projects, compile, ops/production, and the remote OAuth server.
+---
+
+vibeTeX is configured entirely via environment variables. None are required to compile locally; add the Overleaf git token and a project id to unlock the [git bridge](/docs/project-sync). The authoritative source is [`src/config.ts`](https://github.com/oscardvs/vibetex/blob/main/src/config.ts).
+
+## Overleaf & projects
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `OVERLEAF_GIT_TOKEN` | — | Overleaf git authentication token (tier 1). Premium feature — project *Menu → Git*. |
+| `OVERLEAF_PROJECT_ID` | — | Default project id (24-hex). |
+| `OVERLEAF_PROJECTS` | — | `alias=projectId` comma list for multiple projects (e.g. `thesis=abc…,paper=def…`). |
+| `OVERLEAF_BASE_URL` | `https://www.overleaf.com` | Overleaf web base URL (dashboard / "Open in Overleaf" links). |
+| `OVERLEAF_GIT_BASE_URL` | `https://git.overleaf.com` | Git-bridge base URL. Server Pro is `<site>/git`. |
+| `OVERLEAF_SESSION_COOKIE` | — | Your `overleaf_session2` cookie — only used by the experimental session tier. |
+| `VIBETEX_EXPERIMENTAL_SESSION` | `false` | Enable the unofficial, best-effort [session-cookie tier](/docs/free-tier-experimental). |
+
+## Compile
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `VIBETEX_COMPILE_ENGINE` | `auto` | `auto` \| `latexmk` \| `tectonic` \| `pdflatex` \| `xelatex` \| `lualatex`. `auto` picks the best available binary. |
+| `VIBETEX_CLSI_URL` | — | Self-hosted CLSI base URL for remote compile (tier 3 remote). |
+| `VIBETEX_LATEX_TIMEOUT_SEC` | `120` | Hard cap (seconds) on a single local compile run. |
+
+## Ops / production
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `VIBETEX_DATA_DIR` | OS data dir | Working-copies + caches location. |
+| `VIBETEX_CONTACT_EMAIL` | — | Polite-pool contact for external lookups (e.g. DOI resolution). |
+| `VIBETEX_ALLOW_DELETE` | `false` | Must be `true` to expose file deletion (second gate alongside the tool's `confirm`). |
+| `VIBETEX_READ_ONLY` | `false` | Expose only non-mutating tools. Recommended for public/remote endpoints. |
+| `VIBETEX_LOG_LEVEL` | `info` | `debug` \| `info` \| `warn` \| `error` (stderr only — stdout carries JSON-RPC). |
+| `VIBETEX_LOG_FORMAT` | `text` | `text` or `json`. |
+| `VIBETEX_ALLOW_INSECURE_HTTP` | `false` | Override the guard that forbids binding a non-loopback host without OAuth. Trusted networks only. |
+| `VIBETEX_METRICS_ENABLED` | `false` | Expose a metrics endpoint. |
+| `VIBETEX_MCP_RATE_LIMIT_WINDOW_SEC` | `60` | Rate-limit window for the HTTP MCP endpoint. |
+| `VIBETEX_MCP_RATE_LIMIT_MAX` | `120` | Max requests per window. |
+
+## Remote OAuth (claude.ai connector)
+
+Turn the Streamable HTTP `/mcp` endpoint into an OAuth 2.1 + PKCE protected resource so it can be added as a claude.ai custom connector. See [Remote hosting](/docs/remote-hosting) for the full walkthrough.
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `VIBETEX_OAUTH_ENABLED` | `false` | Enable the built-in OAuth 2.1 authorization server + bearer auth on `/mcp`. |
+| `VIBETEX_PUBLIC_URL` | — | Public HTTPS origin claude.ai reaches (OAuth issuer). Required when enabled; must be HTTPS in production. |
+| `VIBETEX_OAUTH_PASSCODE` | — | Operator passcode gating consent (≥ 12 chars; `openssl rand -base64 24`). Required when enabled. |
+| `VIBETEX_OAUTH_ACCESS_TTL` | `3600` | Access-token lifetime (seconds). |
+| `VIBETEX_OAUTH_REFRESH_TTL` | `2592000` | Refresh-token lifetime (seconds). |
+| `VIBETEX_ALLOWED_HOSTS` | — | Comma-separated extra `Host` values for DNS-rebinding protection (merged with the public host). |
+| `VIBETEX_OAUTH_MODE` | `passcode` | Currently `passcode` (single operator key). |
+| `VIBETEX_OAUTH_STORE` | `memory` | `memory` or `file` (persist clients/tokens under the data dir, encrypted at rest). |
+| `VIBETEX_OAUTH_TOKEN_SECRET` | — | AES-256-GCM key material encrypting stored tokens at rest. Required when `store=file` (`openssl rand -base64 32`). |
+
+When OAuth is enabled, the HTTP transport binds `0.0.0.0` with DNS-rebinding protection. Put TLS (Caddy / cloudflared / Fly / Vercel) in front; the proxy must forward the public `Host` header verbatim.
+
+## Multiple projects
+
+Pin a default with `OVERLEAF_PROJECT_ID`, or register aliases:
+
+```bash
+OVERLEAF_PROJECTS="thesis=5f9a…,paper=60b2…" \
+OVERLEAF_GIT_TOKEN=your_token \
+npx -y @oscardvs/vibetex
+```
+
+Every tool that operates on a project takes an optional `project` argument (an alias or a 24-hex id). Omit it to use the default.

@@ -1,0 +1,49 @@
+---
+title: vibeTeX Documentation
+description: vibeTeX is the everything Overleaf MCP server — a Git bridge, project sync, and LaTeX compile for Claude and any MCP client.
+---
+
+vibeTeX is an open-source [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server for [Overleaf](https://www.overleaf.com) and LaTeX. It exposes your Overleaf projects to AI assistants as a suite of typed, safe tools — pull and push over Overleaf's official git bridge, compile to PDF and parse the log, and cross-check every `\ref`, `\cite`, and `\label` before you ship.
+
+> vibeTeX is an independent open-source project and is not affiliated with, endorsed by, or sponsored by Overleaf or Digital Science.
+
+## 30-second quickstart
+
+Add to Claude Code with your Overleaf git token and a project id:
+
+```bash
+claude mcp add vibetex \
+  -e OVERLEAF_GIT_TOKEN=your_token \
+  -e OVERLEAF_PROJECT_ID=your_project_id \
+  -- npx -y @oscardvs/vibetex
+```
+
+Or run it directly:
+
+```bash
+OVERLEAF_GIT_TOKEN=your_token \
+OVERLEAF_PROJECT_ID=your_project_id \
+npx -y @oscardvs/vibetex
+```
+
+Then ask your assistant to call `overleaf_whoami` first — it reports which [capability tiers](/docs/capability-tiers) are live right now, so it picks operations that are actually available.
+
+**No Overleaf token?** vibeTeX still compiles. With a local TeX engine (latexmk, tectonic, or pdflatex) you get `latex_compile`, `latex_log`, and the whole [quality-check](/docs/quality-checks) suite, plus one-click [Open in Overleaf](/docs/creating-projects).
+
+The Overleaf git authentication token is an Overleaf **premium** feature — get it from your project's *Menu → Git*. Free-tier users can opt into the [experimental session-cookie tier](/docs/free-tier-experimental).
+
+## What's in the docs
+
+- [**Capability tiers**](/docs/capability-tiers) — the four auto-detected tiers, what each needs, and the capability matrix.
+- [**Configuration**](/docs/configuration) — every environment variable: core, compile, ops, and OAuth.
+- [**Project sync**](/docs/project-sync) — pull, edit, push, history, and file ops over the git bridge.
+- [**Compiling**](/docs/compiling) — `latex_compile` / `latex_log` / `latex_get_pdf`, engines, and CLSI.
+- [**Quality checks**](/docs/quality-checks) — outline, reference check, lint, format, word count, and BibTeX.
+- [**Creating projects**](/docs/creating-projects) — one-way "Open in Overleaf" from generated LaTeX.
+- [**Free-tier (experimental)**](/docs/free-tier-experimental) — the unofficial session-cookie tier and its caveats.
+- [**Tools reference**](/docs/tools-reference) — all 23 tools with their parameters.
+- [**Remote hosting**](/docs/remote-hosting) — self-host the OAuth remote, or use the paid hosted connector.
+
+## Source & license
+
+[github.com/oscardvs/vibetex](https://github.com/oscardvs/vibetex) — MIT licensed.
