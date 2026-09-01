@@ -1,9 +1,9 @@
 # vibetex-site
 
-The marketing + documentation site for **vibeTeX** — _the everything Overleaf
-MCP server — Git bridge, project sync, and LaTeX compile for Claude and any MCP
-client._ Built with [Fumadocs](https://fumadocs.dev) on Next.js 16 + React 19 +
-Tailwind v4, and deployed on **Vercel**.
+The marketing and documentation site for **vibeTeX**, an MCP server for LaTeX
+and Overleaf projects: Git bridge, project sync, and LaTeX compile for Claude and
+other MCP clients. Built with [Fumadocs](https://fumadocs.dev) on Next.js 16 +
+React 19 + Tailwind v4, and deployed on **Vercel**.
 
 > vibeTeX is an independent open-source project and is not affiliated with,
 > endorsed by, or sponsored by Overleaf or Digital Science.
@@ -33,7 +33,7 @@ Vercel auto-deploys from the default branch; the Fumadocs search, OG-image, and
 | `app/(home)`                 | Landing page, pricing, privacy, terms.                  |
 | `app/docs`                   | Documentation layout and pages.                         |
 | `app/api/search/route.ts`    | Fumadocs static search handler.                         |
-| `app/api/checkout`           | Polar checkout (env-guarded — disabled without keys).   |
+| `app/api/checkout`           | Polar checkout (env-guarded; disabled without keys).    |
 | `app/api/webhook/polar`      | Polar webhook receiver (env-guarded).                   |
 | `app/api/portal`             | Polar customer-portal link (env-guarded).               |
 | `content/docs/*.mdx`         | Documentation content (GFM + fenced code + mermaid).    |

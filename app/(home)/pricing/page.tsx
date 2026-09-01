@@ -9,7 +9,7 @@ import { hostedPrice, hostedPeriod, hostedBilling, hostedLive, supportEmail, con
 export const metadata: Metadata = {
   title: 'Pricing',
   description:
-    'vibeTeX is free and open-source to self-host, with every feature. The optional hosted tier is a managed, always-on Overleaf MCP connector — €30 once for a 1-year license, billed via Polar.',
+    'vibeTeX is free and open-source to self-host, with every feature. The optional hosted tier is a managed Overleaf MCP connector: €30 once for a 1-year license, billed via Polar.',
   alternates: { canonical: '/pricing' },
 };
 
@@ -29,15 +29,15 @@ function Arrow() {
 }
 
 const SELF = [
-  'Every feature — no paywall, ever',
-  'Local-first; your machine, your tokens',
+  'Every feature, no paywall',
+  'Runs on your machine with your own tokens',
   'Self-host the OAuth remote for a team',
   'Community support on GitHub',
 ];
 const HOSTED = [
-  'Connect in claude.ai in ~30 seconds',
+  'Connect in claude.ai as a custom connector',
   'One-time license key, 1-year expiry',
-  'Always-on, maintained & auto-updated',
+  'Maintained and updated for you',
   'You keep your data & your Overleaf token',
   'Email support · self-host anytime',
 ];
@@ -45,19 +45,19 @@ const HOSTED = [
 const FAQ = [
   {
     q: 'Why pay if it’s open-source?',
-    a: 'You’re paying for hosting and maintenance, not features. Self-hosting gives you the exact same 26 tools for free, forever — the hosted tier just means you don’t have to run or update anything.',
+    a: 'You are paying for hosting and maintenance. Self-hosting gives you the same 26 tools for free; the hosted tier means you do not have to run or update anything.',
   },
   {
     q: 'What does “pay once” mean?',
-    a: 'It’s a one-time €30 purchase, not a recurring subscription. You receive a license key that’s valid for one year of the hosted connector. There’s no auto-renewal — buy again when (and only if) you want another year.',
+    a: 'It is a one-time €30 purchase. You receive a license key that is valid for one year of the hosted connector. There is no subscription and no auto-renewal; buy again if you want another year.',
   },
   {
     q: 'What data does the hosted server see?',
-    a: 'Only your own Overleaf git token, used solely to talk to your own projects on your behalf. It’s held for the duration of your session and never stored beyond it. vibeTeX is a tool — your project content stays yours.',
+    a: 'Only your own Overleaf git token, used to talk to your own projects on your behalf. It is held for the duration of your session and is not stored beyond it. Your project content stays yours.',
   },
   {
     q: 'Is the free-tier session cookie supported here?',
-    a: 'The experimental session-cookie tier is an unofficial, best-effort, ToS-grey feature you enable yourself by pasting your own cookie. It’s off by default and is independent of the hosted license — see the docs before using it.',
+    a: 'The experimental session-cookie tier is an unofficial, best-effort feature in a grey area under Overleaf’s terms. You enable it yourself by pasting your own cookie. It is off by default and is independent of the hosted license; see the docs before using it.',
   },
   {
     q: 'How does billing work?',
@@ -78,11 +78,11 @@ export default function PricingPage() {
         <div className="relative mx-auto max-w-3xl px-6 py-24 text-center md:py-28">
           <span className="z-eyebrow z-rise">Pricing</span>
           <h1 className="z-display z-rise mt-6 text-[2.6rem] sm:text-5xl" style={{ animationDelay: '60ms' }}>
-            Self-host free.<br />Hosted, pay once.
+            Self-host for free,<br />or pay once for hosting.
           </h1>
           <p className="z-rise mx-auto mt-6 max-w-xl text-lg leading-relaxed text-fd-muted-foreground" style={{ animationDelay: '140ms' }}>
-            vibeTeX is open-source and free to self-host — with <span className="z-serif italic text-fd-foreground">every</span> feature.
-            The hosted tier is a one-time {hostedPrice} license for people who’d rather not run anything. It also sustains the project.
+            vibeTeX is open-source and free to self-host, with <span className="z-serif italic text-fd-foreground">every</span> feature.
+            The hosted tier is a one-time {hostedPrice} license for people who would rather not run anything. It also helps fund the project.
           </p>
         </div>
       </section>
@@ -96,7 +96,7 @@ export default function PricingPage() {
               <div className="z-bezel-inner flex h-full flex-col p-8">
                 <p className="z-label">Self-hosted</p>
                 <p className="z-display mt-4 text-5xl">Free</p>
-                <p className="mt-2 text-sm text-fd-muted-foreground">MIT-licensed. Run it yourself, forever.</p>
+                <p className="mt-2 text-sm text-fd-muted-foreground">MIT-licensed. Run it yourself.</p>
                 <ul className="mt-7 flex-1 space-y-3 text-sm text-fd-foreground">
                   {SELF.map((f) => (
                     <li key={f} className="flex gap-2.5"><Check /><span>{f}</span></li>
@@ -110,7 +110,7 @@ export default function PricingPage() {
             </div>
           </Reveal>
 
-          {/* Hosted — highlighted */}
+          {/* Hosted (highlighted) */}
           <Reveal delay={90}>
             <div className="z-bezel h-full" style={{ background: 'var(--accent-soft)', borderColor: 'color-mix(in oklab, var(--accent) 35%, var(--color-fd-border))' }}>
               <div className="z-bezel-inner flex h-full flex-col p-8">
@@ -122,7 +122,7 @@ export default function PricingPage() {
                   {hostedPrice}
                   <span className="text-xl text-fd-muted-foreground">{hostedPeriod}</span>
                 </p>
-                <p className="mt-2 text-sm text-fd-muted-foreground">{hostedBilling}. Managed, always-on connector.</p>
+                <p className="mt-2 text-sm text-fd-muted-foreground">{hostedBilling}. A managed connector.</p>
                 <ul className="mt-7 flex-1 space-y-3 text-sm text-fd-foreground">
                   {HOSTED.map((f) => (
                     <li key={f} className="flex gap-2.5"><Check /><span>{f}</span></li>
@@ -152,7 +152,7 @@ export default function PricingPage() {
             {[
               ['01', 'Buy once', 'Check out via Polar and get a 1-year license key by email.'],
               ['02', 'Connect', `Add ${connectorUrl} as a custom connector in claude.ai and paste your key.`],
-              ['03', 'Use', 'Add your own Overleaf git token — your projects are now available to your AI.'],
+              ['03', 'Use', 'Add your own Overleaf git token, and your projects are available to your assistant.'],
             ].map(([n, t, d], i) => (
               <Reveal key={n} delay={i * 70}>
                 <div className="z-bezel h-full">
@@ -192,7 +192,7 @@ export default function PricingPage() {
         <Reveal>
           <div className="mt-12 text-center">
             <SubscribeButton label="Get the hosted license" />
-            <p className="z-label mt-4 normal-case tracking-[0.03em]">Prefer to self-host? It’s free — <Link href="/docs" className="text-fd-primary hover:underline">start here</Link>. Questions? <a href={`mailto:${supportEmail}`} className="text-fd-primary hover:underline">{supportEmail}</a></p>
+            <p className="z-label mt-4 normal-case tracking-[0.03em]">Self-hosting is free: <Link href="/docs" className="text-fd-primary hover:underline">start here</Link>. Questions? <a href={`mailto:${supportEmail}`} className="text-fd-primary hover:underline">{supportEmail}</a></p>
           </div>
         </Reveal>
       </section>

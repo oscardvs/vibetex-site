@@ -5,12 +5,12 @@ import StaticSearchDialog from '@/components/search-dialog';
 import type { Metadata } from 'next';
 
 const description =
-  'The everything Overleaf MCP server — Git bridge, project sync, and LaTeX compile for Claude and any MCP client. Pull, edit, push, compile, and reference-check your Overleaf and LaTeX projects from any AI assistant. Open-source, local-first.';
+  'vibeTeX is an MCP server for LaTeX and Overleaf projects: a Git bridge, project sync, and LaTeX compile for Claude and other MCP clients. Pull, edit, push, compile, and check references in your Overleaf and LaTeX projects from your assistant. Open-source and MIT-licensed.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://vibetex.dev'),
   title: {
-    default: 'vibeTeX — Overleaf and LaTeX, inside every AI conversation',
+    default: 'vibeTeX: Overleaf and LaTeX for Claude and other MCP clients',
     template: '%s · vibeTeX',
   },
   description,
@@ -32,16 +32,16 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://vibetex.dev',
     siteName: 'vibeTeX',
-    title: 'vibeTeX — Overleaf and LaTeX, inside every AI conversation',
+    title: 'vibeTeX: Overleaf and LaTeX for Claude and other MCP clients',
     description:
-      'The everything Overleaf MCP server — Git bridge, project sync, and LaTeX compile for Claude and any MCP client.',
+      'An MCP server for LaTeX and Overleaf projects: Git bridge, project sync, and LaTeX compile for Claude and other MCP clients.',
     images: [{ url: '/og/home/image.png', width: 1200, height: 630, alt: 'vibeTeX' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'vibeTeX — Overleaf and LaTeX, inside every AI conversation',
+    title: 'vibeTeX: Overleaf and LaTeX for Claude and other MCP clients',
     description:
-      'The everything Overleaf MCP server — Git bridge, project sync, and LaTeX compile for Claude and any MCP client.',
+      'An MCP server for LaTeX and Overleaf projects: Git bridge, project sync, and LaTeX compile for Claude and other MCP clients.',
     images: ['/og/home/image.png'],
   },
 };

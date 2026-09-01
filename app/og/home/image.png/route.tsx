@@ -9,8 +9,8 @@ export function GET() {
   return new ImageResponse(
     (
       <DefaultImage
-        title="Overleaf and LaTeX, inside every AI conversation"
-        description="The everything Overleaf MCP server — Git bridge, project sync, and LaTeX compile for Claude and any MCP client."
+        title="Overleaf and LaTeX for Claude and other MCP clients"
+        description="An MCP server for LaTeX and Overleaf projects: Git bridge, project sync, and LaTeX compile for Claude and other MCP clients."
         site={appName}
       />
     ),

@@ -45,14 +45,6 @@ function Mark({ size = 11 }: { size?: number }) {
   );
 }
 
-/* comparison cell: glyphs get a screen-reader word so the table isn't gibberish */
-const GLYPH_LABEL: Record<string, string> = { '✓': 'Yes', '✗': 'No', '~': 'Partial', '—': 'Not applicable' };
-function CmpCell({ v }: { v: string }) {
-  const label = GLYPH_LABEL[v];
-  if (label) return (<><span aria-hidden>{v}</span><span className="sr-only">{label}</span></>);
-  return <>{v}</>;
-}
-
 /* ── faux demo card: a Claude chat doing pull → compile → check-refs ──────── */
 function DemoCard() {
   return (
@@ -80,7 +72,7 @@ function DemoCard() {
           <div className="space-y-2 text-fd-muted-foreground">
             <p>
               Pulled <span className="text-fd-foreground">thesis</span> via the git bridge and compiled with
-              latexmk — <span className="text-fd-foreground">PDF built, 0 errors</span>. One cross-reference was
+              latexmk: <span className="text-fd-foreground">PDF built, 0 errors</span>. One cross-reference was
               dangling: <code className="z-mono text-[0.8rem]">{'\\ref{fig:results}'}</code> pointed at a figure whose
               label is actually <code className="z-mono text-[0.8rem]">fig:main-results</code>.
             </p>
@@ -92,7 +84,7 @@ function DemoCard() {
               <span className="text-fd-primary">{'+ see Figure \\ref{fig:main-results}'}</span>
             </p>
             <p>
-              Pushed the fix back to Overleaf. Recompiled clean — every <span className="z-serif italic text-fd-foreground">\ref</span> and
+              Pushed the fix back to Overleaf. Recompiled clean; every <span className="z-serif italic text-fd-foreground">\ref</span> and
               <span className="z-serif italic text-fd-foreground"> \cite</span> now resolves.
             </p>
           </div>
@@ -105,32 +97,32 @@ function DemoCard() {
 const TIERS = [
   {
     icon: I.git,
-    title: 'Git bridge — the robust core',
-    body: 'Full read/write plus commit history over Overleaf’s official git authentication token. Pull, edit, push, diff — your project as a real working copy. Requires a paid Overleaf token.',
+    title: 'Git bridge',
+    body: 'Read, write, and commit history over Overleaf’s official git bridge. Pull, edit, push, and diff a local working copy of your project. Requires a paid Overleaf git token.',
     span: 'md:col-span-3',
   },
   {
     icon: I.compile,
     title: 'Local & CLSI compile',
-    body: 'Build to PDF and parse the log with latexmk, tectonic (zero-TeXLive), or pdflatex — or point at a self-hosted CLSI. No Overleaf premium needed to compile.',
+    body: 'Build to PDF and parse the log with latexmk, tectonic (no TeX Live needed), or pdflatex, or point at a self-hosted CLSI. No Overleaf account is needed to compile locally.',
     span: 'md:col-span-3',
   },
   {
     icon: I.refs,
-    title: 'Reference-check that fixes',
-    body: 'latex_check_refs cross-validates every \\ref, \\cite, and \\label against your .bib and document — then your AI repairs the dangling ones, with a cited diff.',
+    title: 'Reference check',
+    body: 'latex_check_refs checks every \\ref, \\cite, and \\label against your .bib files and document, so your assistant can repair the dangling ones.',
     span: 'md:col-span-2',
   },
   {
     icon: I.sync,
     title: 'Open in Overleaf',
-    body: 'No account, no auth: turn generated LaTeX into a brand-new Overleaf project in one click (one-way).',
+    body: 'No account or auth needed: turn generated LaTeX into a new Overleaf project (one-way).',
     span: 'md:col-span-2',
   },
   {
     icon: I.spark,
-    title: 'Free-tier friendly',
-    body: 'An opt-in, experimental session-cookie tier is the only way free Overleaf users get list / pull / push / compile.',
+    title: 'Free tier (experimental)',
+    body: 'An opt-in, experimental session-cookie tier gives free Overleaf users list, pull, push, and compile. It is unofficial and off by default.',
     span: 'md:col-span-2',
   },
 ];
@@ -149,18 +141,18 @@ export default function Home() {
           <div>
             <span className="z-eyebrow z-rise">Open-source · Overleaf MCP server</span>
             <h1 className="z-display z-rise mt-6 text-[2.6rem] sm:text-6xl" style={{ animationDelay: '60ms' }}>
-              Overleaf and LaTeX,<br />inside every AI<br />conversation.
+              Overleaf and LaTeX,<br />for Claude and<br />other MCP clients.
             </h1>
             <p className="z-rise mt-6 max-w-xl text-lg leading-relaxed text-fd-muted-foreground" style={{ animationDelay: '140ms' }}>
-              vibeTeX is the everything Overleaf MCP server — a <span className="z-serif italic text-fd-foreground">Git bridge,
-              project sync, and LaTeX compile</span> for Claude and any MCP client. Pull, edit, push, build the PDF,
-              and check every reference, without leaving the chat.
+              vibeTeX is an MCP server for LaTeX and Overleaf projects: a <span className="z-serif italic text-fd-foreground">Git bridge,
+              project sync, and LaTeX compile</span> for Claude and other MCP clients. Pull, edit, push, build the PDF,
+              and check references from the chat.
             </p>
             <div className="z-rise mt-8 flex flex-wrap items-center gap-3" style={{ animationDelay: '220ms' }}>
               <CopyCommand />
               <Link href={repo} className="z-ghost" target="_blank" rel="noreferrer">
                 <Icon path={I.github} className="text-fd-muted-foreground" />
-                Star on GitHub
+                View on GitHub
               </Link>
             </div>
             <p className="z-label z-rise mt-6 normal-case tracking-[0.04em]" style={{ animationDelay: '300ms' }}>
@@ -186,11 +178,11 @@ export default function Home() {
       {/* ── INSTALL ──────────────────────────────────────────────────────── */}
       <section id="install" className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 py-24">
         <Reveal>
-          <span className="z-eyebrow">Install in 30 seconds</span>
-          <h2 className="z-display mt-5 text-3xl sm:text-4xl">One command. Any MCP client.</h2>
+          <span className="z-eyebrow">Install</span>
+          <h2 className="z-display mt-5 text-3xl sm:text-4xl">Install with one command.</h2>
           <p className="mt-4 max-w-2xl text-fd-muted-foreground">
-            Compile works out of the box. Add your Overleaf git token and a project id for full
-            read / write / history over the official git bridge.
+            Local compile needs a TeX install and no Overleaf account. Add your Overleaf git token and a
+            project id for read, write, and history over the official git bridge.
           </p>
         </Reveal>
         <Reveal delay={80}>
@@ -225,13 +217,13 @@ export default function Home() {
         <div className="mx-auto max-w-3xl px-6 py-24 text-center">
           <Reveal>
             <h2 className="z-display text-3xl sm:text-[2.6rem]">
-              Your paper lives in Overleaf.<br />Your AI can&rsquo;t touch it.
+              Your paper lives in Overleaf.<br />Your assistant can work on it there.
             </h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-fd-muted-foreground">
-              You copy a section into chat, paste the suggestion back, switch tabs to compile, hunt the
-              log for the one error, then discover a <span className="text-fd-foreground">dangling \ref</span>. vibeTeX
-              closes the loop: your assistant <span className="z-serif italic text-fd-foreground">pulls, edits, pushes,
-              compiles, and reference-checks</span> the real project — end to end.
+              Without a bridge, you copy a section into chat, paste the suggestion back, switch tabs to compile,
+              hunt the log for the error, then find a <span className="text-fd-foreground">dangling \ref</span>. With vibeTeX,
+              your assistant <span className="z-serif italic text-fd-foreground">pulls, edits, pushes,
+              compiles, and reference-checks</span> the project itself.
             </p>
           </Reveal>
         </div>
@@ -240,14 +232,14 @@ export default function Home() {
       {/* ── FEATURES (bento) ─────────────────────────────────────────────── */}
       <section id="why" className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 py-24">
         <Reveal>
-          <span className="z-eyebrow">Why vibeTeX</span>
+          <span className="z-eyebrow">Features</span>
           <h2 className="z-display mt-5 max-w-2xl text-3xl sm:text-4xl">
-            Four capability tiers, auto-detected. Always the most it can do.
+            Four capability tiers, detected at startup.
           </h2>
           <p className="mt-4 max-w-2xl text-fd-muted-foreground">
-            vibeTeX degrades gracefully — paid git token, free compile, one-click create, or the
-            experimental free-tier sync. <code className="z-mono text-sm text-fd-primary">overleaf_whoami</code> reports
-            exactly which tiers are live right now.
+            vibeTeX uses whichever tiers your environment supports: the paid git token, local compile,
+            no-auth project creation, or the experimental free-tier sync. <code className="z-mono text-sm text-fd-primary">overleaf_whoami</code> reports
+            which tiers are active.
           </p>
         </Reveal>
         <div className="mt-12 grid gap-4 md:grid-cols-6">
@@ -270,10 +262,10 @@ export default function Home() {
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-fd-primary">
                   <Icon path={I.lock} />
                 </span>
-                <h3 className="z-serif text-lg text-fd-foreground">26 typed tools · local-first</h3>
+                <h3 className="z-serif text-lg text-fd-foreground">26 tools</h3>
                 <p className="max-w-xl text-sm text-fd-muted-foreground">
-                  Discovery, project sync, compile, and quality checks — outline, lint, format, word-count,
-                  and BibTeX. Your git token talks only to your own Overleaf, never stored beyond the session.
+                  Discovery, project sync, compile, and quality checks: outline, lint, format, word count,
+                  and BibTeX. Your git token stays in your own environment and is used only to talk to Overleaf.
                 </p>
                 <Link href="/docs" className="z-ghost ml-auto text-sm">
                   Read the docs <Icon path={I.arrow} className="h-4 w-4" />
@@ -284,56 +276,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── COMPARISON ───────────────────────────────────────────────────── */}
-      <section className="border-y border-fd-border bg-fd-card/30">
-        <div className="mx-auto w-full max-w-5xl px-6 py-24">
-          <Reveal>
-            <h2 className="z-display text-3xl sm:text-4xl">vibeTeX vs. the alternatives</h2>
-          </Reveal>
-          <Reveal delay={80}>
-            <div className="z-bezel mt-10">
-              <div className="z-bezel-inner overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
-                  <caption className="sr-only">How vibeTeX compares to other Overleaf MCP servers and doing it by hand</caption>
-                  <thead>
-                    <tr className="z-mono text-[0.72rem] uppercase tracking-wider text-fd-muted-foreground">
-                      <th scope="col" className="p-4 text-left font-medium"><span className="sr-only">Capability</span></th>
-                      <th scope="col" className="p-4 text-center font-medium text-fd-primary">vibeTeX</th>
-                      <th scope="col" className="p-4 text-center font-medium">Other Overleaf MCPs</th>
-                      <th scope="col" className="p-4 text-center font-medium">By hand</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      ['Official git bridge: read / write / history', '✓', '~', '✗'],
-                      ['Compile to PDF + parse the log', '✓', 'rare', '✓'],
-                      ['Cross-reference & citation check', '✓', '✗', 'manual'],
-                      ['Open generated LaTeX in Overleaf', '✓', 'some', 'manual'],
-                      ['Free-tier sync (experimental)', '✓', '✗', '—'],
-                      ['No Python — TypeScript, one npx', '✓', 'varies', '—'],
-                      ['Open-source (MIT) · self-host free', '✓', 'varies', '—'],
-                      ['Pay-once hosted option', '✓', 'rare', '—'],
-                    ].map((row) => (
-                      <tr key={row[0]} className="border-t border-fd-border">
-                        <th scope="row" className="p-4 text-left font-normal text-fd-foreground">{row[0]}</th>
-                        <td className="p-4 text-center text-fd-primary"><CmpCell v={row[1]} /></td>
-                        <td className="p-4 text-center text-fd-muted-foreground"><CmpCell v={row[2]} /></td>
-                        <td className="p-4 text-center text-fd-muted-foreground"><CmpCell v={row[3]} /></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ── PRICING ──────────────────────────────────────────────────────── */}
       <section className="mx-auto w-full max-w-4xl px-6 py-24">
         <Reveal>
           <span className="z-eyebrow">Pricing</span>
-          <h2 className="z-display mt-5 text-3xl sm:text-4xl">Self-host free. Hosted, pay once.</h2>
+          <h2 className="z-display mt-5 text-3xl sm:text-4xl">Self-host for free, or pay once for hosting.</h2>
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           <Reveal>
@@ -341,10 +288,10 @@ export default function Home() {
               <div className="z-bezel-inner flex h-full flex-col p-7">
                 <h3 className="z-serif text-xl">Self-hosted</h3>
                 <p className="z-display mt-3 text-4xl">Free</p>
-                <p className="mt-2 text-sm text-fd-muted-foreground">MIT-licensed. Run it yourself, forever.</p>
+                <p className="mt-2 text-sm text-fd-muted-foreground">MIT-licensed. Run it yourself.</p>
                 <ul className="mt-5 space-y-2 text-sm text-fd-muted-foreground">
-                  <li>· Every feature, no paywall</li>
-                  <li>· Local-first, your own tokens</li>
+                  <li>· Every feature</li>
+                  <li>· Runs on your machine with your own tokens</li>
                   <li>· Self-host the OAuth remote for a team</li>
                 </ul>
                 <CopyCommand className="mt-6" />
@@ -356,9 +303,9 @@ export default function Home() {
               <div className="z-bezel-inner flex h-full flex-col p-7">
                 <h3 className="z-serif text-xl">Hosted</h3>
                 <p className="z-display mt-3 text-4xl">{hostedPrice}<span className="text-lg text-fd-muted-foreground">{hostedPeriod}</span></p>
-                <p className="mt-2 text-sm text-fd-muted-foreground">{hostedBilling} — a managed, always-on connector.</p>
+                <p className="mt-2 text-sm text-fd-muted-foreground">{hostedBilling}. A hosted connector, so there is nothing to run yourself.</p>
                 <ul className="mt-5 space-y-2 text-sm text-fd-muted-foreground">
-                  <li>· Zero setup — connect in claude.ai</li>
+                  <li>· Connect in claude.ai as a custom connector</li>
                   <li>· One-time license key, 1-year expiry</li>
                   <li>· You keep your data &amp; tokens</li>
                 </ul>
@@ -377,9 +324,9 @@ export default function Home() {
         />
         <div className="relative mx-auto max-w-3xl px-6 py-28 text-center">
           <Reveal>
-            <h2 className="z-display text-4xl sm:text-5xl">Stop tab-switching to ship your paper.</h2>
+            <h2 className="z-display text-4xl sm:text-5xl">Install vibeTeX</h2>
             <p className="mx-auto mt-5 max-w-xl text-lg text-fd-muted-foreground">
-              Connect Overleaf and LaTeX to your AI in under a minute. Open-source, local-first, free to self-host.
+              One npx command. Open-source, MIT-licensed, and free to self-host.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <CopyCommand />

@@ -25,7 +25,7 @@ export function baseOptions(): BaseLayoutProps {
     links: [
       { text: 'Docs', url: '/docs' },
       { text: 'Pricing', url: '/pricing' },
-      { text: 'Why vibeTeX', url: '/#why' },
+      { text: 'Features', url: '/#why' },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
